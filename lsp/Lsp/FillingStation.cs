@@ -2,20 +2,14 @@ namespace Lsp
 {
     public class FillingStation
     {
-        public void Refuel(Vehicle vehicle)
+        public void Refuel(PetrolCar petrolCar)
         {
-            if (vehicle is PetrolCar)
-            {
-                vehicle.FillUpWithFuel();
-            }
+            petrolCar.FillUpWithFuel();
         }
 
-        public void Charge(Vehicle vehicle)
+        public void Charge(ElectricCar electricCar)
         {
-            if (vehicle is ElectricCar)
-            {
-                vehicle.ChargeBattery();
-            }
+            electricCar.ChargeBattery();
         }
     }
 }

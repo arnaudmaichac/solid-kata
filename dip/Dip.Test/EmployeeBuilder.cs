@@ -9,11 +9,6 @@ namespace Dip.Test
         private DateTime dateOfBirth = new DateTime(1980, 9, 10);
         private string email = "john.doe@foobar.com";
 
-        public static EmployeeBuilder AnEmployee()
-        {
-            return new EmployeeBuilder();
-        }
-
         public EmployeeBuilder WithEmail(string email)
         {
             this.email = email;

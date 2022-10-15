@@ -1,12 +1,7 @@
 namespace Isp
 {
-    public class Dog : IAnimal
+    public class Dog : IRunning, IBarking
     {
-        public void Fly()
-        {
-
-        }
-
         public void Run()
         {
             Console.Write("Dog is running");

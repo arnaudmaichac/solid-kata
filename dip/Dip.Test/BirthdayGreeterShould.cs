@@ -12,6 +12,7 @@ namespace Dip.Test
         private readonly StringWriter consoleContent;
         private readonly Mock<IEmployeeRepository> employeeRepositoryMock;
         private readonly Mock<Clock> clockMock;
+        private readonly Mock<EmailSender> emailSenderMock;
 
         public BirthdayGreeterShould()
         {
@@ -20,6 +21,7 @@ namespace Dip.Test
 
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
             clockMock = new Mock<Clock>();
+            emailSenderMock = new Mock<EmailSender>();
         }
 
         [Fact]
@@ -29,19 +31,24 @@ namespace Dip.Test
                 .Setup(cm => cm.MonthDay())
                 .Returns(TODAY);
 
-            Employee employee = EmployeeBuilder
-                .AnEmployee()
+            Employee employee = new EmployeeBuilder()
                 .Build();
 
             employeeRepositoryMock
                 .Setup(erm => erm.FindEmployeesBornOn(new DateTime(DateTime.Today.Year, CURRENT_MONTH, CURRENT_DAY_OF_MONTH)))
                 .Returns(new List<Employee>() { employee });
 
-            BirthdayGreeter birthdayGreeter = new BirthdayGreeter(employeeRepositoryMock.Object, clockMock.Object);
+            var args = new List<Email>();
+            emailSenderMock.Setup(esm => esm.Send(Capture.In(args)));
+
+            BirthdayGreeter birthdayGreeter = new BirthdayGreeter(employeeRepositoryMock.Object, clockMock.Object, emailSenderMock.Object);
             birthdayGreeter.SendGreetings();
 
-            string actual = consoleContent.ToString();
-            Assert.Equal($"To:{employee.Email}, Subject: Happy birthday!, Message: Happy birthday, dear {employee.FirstName}!", actual);
+            var sentEmail = args.First();
+
+            Assert.Equal(sentEmail.To, employee.Email);
+            Assert.Equal("Happy birthday!", sentEmail.Subject);
+            Assert.Equal("Happy birthday, dear John!", sentEmail.Message);
         }
     }
 }

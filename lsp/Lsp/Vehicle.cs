@@ -18,11 +18,5 @@ namespace Lsp
         {
             engineStarted = false;
         }
-
-        public abstract void FillUpWithFuel();
-
-        public abstract void ChargeBattery();
-
-
     }
 }

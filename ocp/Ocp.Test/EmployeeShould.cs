@@ -10,14 +10,14 @@ namespace Ocp.Test
         [Fact]
         public void Not_Add_Bonus_To_The_Engineer_Pay_Amount()
         {
-            Employee employee = new Employee(SALARY, BONUS, EmployeeType.ENGINEER);
+            Employee employee = new Engineer(SALARY, BONUS);
             Assert.Equal(SALARY, employee.PayAmount());
         }
 
         [Fact]
         public void Add_Bonus_To_The_Manager_Pay_Amount()
         {
-            Employee employee = new Employee(SALARY, BONUS, EmployeeType.MANAGER);
+            Employee employee = new Manager(SALARY, BONUS);
             Assert.Equal(SALARY + BONUS, employee.PayAmount());
         }
     }

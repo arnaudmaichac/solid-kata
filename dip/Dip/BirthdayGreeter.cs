@@ -4,11 +4,13 @@ namespace Dip
     {
         private readonly IEmployeeRepository employeeRepository;
         private readonly Clock clock;
+        private readonly EmailSender emailSender;
 
-        public BirthdayGreeter(IEmployeeRepository employeeRepository, Clock clock)
+        public BirthdayGreeter(IEmployeeRepository employeeRepository, Clock clock, EmailSender emailSender)
         {
             this.employeeRepository = employeeRepository;
             this.clock = clock;
+            this.emailSender = emailSender;
         }
 
         public void SendGreetings()
@@ -18,7 +20,7 @@ namespace Dip
             employeeRepository.FindEmployeesBornOn(today)
                 .Select(EmailFor)
                 .ToList()
-                .ForEach(e => new EmailSender().Send(e));
+                .ForEach(e => emailSender.Send(e));
         }
 
         private Email EmailFor(Employee employee)

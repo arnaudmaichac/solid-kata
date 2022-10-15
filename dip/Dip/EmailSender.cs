@@ -2,7 +2,7 @@ namespace Dip
 {
     public class EmailSender
     {
-        public void Send(Email email)
+        public virtual void Send(Email email)
         {
             Console.Write($"To:{email.To}, Subject: {email.Subject}, Message: {email.Message}");
         }

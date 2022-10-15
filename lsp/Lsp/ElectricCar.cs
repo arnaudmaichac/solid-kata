@@ -1,17 +1,12 @@
 namespace Lsp
 {
-    public class ElectricCar : Vehicle
+    public class ElectricCar : Vehicle, IElectricityPowered
     {
 
         private const int BATTERY_FULL = 100;
         private int batteryLevel;
 
-        public override void FillUpWithFuel()
-        {
-            throw new InvalidOperationException("It's an electric car");
-        }
-
-        public override void ChargeBattery()
+        public void ChargeBattery()
         {
             batteryLevel = BATTERY_FULL;
         }

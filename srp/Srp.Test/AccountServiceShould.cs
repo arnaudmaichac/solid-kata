@@ -16,14 +16,16 @@ namespace Srp.Test
                 new Transaction(new DateTime(2014, 4, 10), 500)
         };
 
-        private AccountService accountService;
+        private readonly AccountService accountService;
 
         public AccountServiceShould()
         {
-            this.accountService = new AccountService(
+            StatementPrinter statementPrinter = new StatementPrinter(consoleMock.Object);
+
+            accountService = new AccountService(
                 transactionRepositoryMock.Object,
-                clockMock.Object,
-                consoleMock.Object);
+                statementPrinter,
+                clockMock.Object);
         }
 
         private Mock<Clock> clockMock = new Mock<Clock>();
@@ -64,7 +66,7 @@ namespace Srp.Test
         {
             transactionRepositoryMock.Setup(trm => trm.All()).Returns(Transactions);
 
-            var arguments = new[] {
+            var consoleOutput = new[] {
                 "DATE | AMOUNT | BALANCE",
                 "10/04/2014 | 500.00 | 1400.00",
                 "02/04/2014 | -100.00 | 900.00",
@@ -72,7 +74,7 @@ namespace Srp.Test
 
             int index = 0;
             consoleMock.Setup(cm => cm.PrintLine(It.IsAny<string>()))
-                .Callback((string s) => Assert.Equal(arguments[index++], s));
+                .Callback((string s) => Assert.Equal(consoleOutput[index++], s));
 
             accountService.PrintStatement();
 
